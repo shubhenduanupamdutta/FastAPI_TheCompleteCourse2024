@@ -12,6 +12,7 @@
 
 ### Mini Projects
 
+----
 #### **demo_game**: A simple game to demonstrate Python Classes
 
 **Acceptance Criteria**
