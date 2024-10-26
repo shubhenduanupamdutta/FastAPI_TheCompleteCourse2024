@@ -24,3 +24,5 @@
 - Each enemy has different powers, health points and attack damage.
 
 ---
+#### **books**: Creating and enhancing books to learn the basics of FastAPI i.e. CRUD Operations.
+**CRUD** stands for Create, Read, Update, and Delete.
