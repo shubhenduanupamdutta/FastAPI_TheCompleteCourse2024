@@ -148,3 +148,70 @@ async def read_user_me():
 - **Usually a DELETE request will have a path parameter to identify the resource that needs to be deleted.**
 
 ---
+
+## Pydantic
+
+---
+
+### What is Pydantic?
+
+- **Pydantic is a python library that is used for data modelling, data parsing and has efficient error handling.**
+- **Pydantic is commonly used as a resource for data validation and how to handle data coming to our FastAPI application.**
+
+---
+
+### Implementing Pydantic in FastAPI
+
+---
+
+- **Create a Pydantic model class that will define the structure of the data that will be passed to the FastAPI application, for data validation.**
+- **Field data validation on each variable/element in the Pydantic model class.**
+- **This new model will be inherit from the Pydantic BaseModel class.**
+
+```python
+from pydantic import BaseModel
+
+class Book(BaseModel):
+    title: str
+```
+
+**In the above example, we have created a Pydantic model class called `Book` that has a single field called `title` which is of type `str`. This will validate that the data passed to the FastAPI application has a `title` key and the value is a string.**
+
+---
+
+## Status Codes
+
+---
+### What are Status Codes?
+- **An HTTP Status Code is used to help the client (the user or system submitting the data to the server) to understand what happened on the server side application.**
+- **Status Codes are three digit numbers, and are international standard on how a Client/Server should handle the result of the request.**
+- **It allows everyone to understand what happened, whether their request was successful or not.**
+
+---
+### Most Common Status Codes
+- **1xx**: Informational Response -> Request received, continuing process ...etc.
+- **2xx**: Success -> The action was successfully received, understood, and accepted.
+- **3xx**: Redirection -> Further action must be taken in order to complete the request.
+- **4xx**: Client Error -> The request contains bad syntax or cannot be fulfilled.
+- **5xx**: Server Error -> The server failed to fulfill an apparently valid request.
+
+---
+### 2xx Success Status Codes
+- **200 OK**: Standard response for successful HTTP requests. Commonly used for successful GET requests when data is being returned.
+- **201 Created**: The request has been fulfilled, resulting in the creation of a new resource by POST requests.
+- **204 No Content**: The server has successfully fulfilled the request and that there is no additional content to send in the response payload body, commonly used with PUT and DELETE requests.
+
+---
+### 4xx Client Error Status Codes
+- **400 Bad Request**: The server cannot or will not process the request due to an apparent client error. Commonly used for invalid data in the request.
+- **401 Unauthorized**: Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.
+- **403 Forbidden**: The request was valid, but the server is refusing action. The user might not have the necessary permissions for a resource, or may need an account of some sort.
+- **404 Not Found**: The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible.
+- **405 Method Not Allowed**: A request method is not supported for the requested resource; for example, a GET request on a form that requires data to be presented via POST, or a PUT request on a read-only resource.
+- **422 Unprocessable Entity**: The request was well-formed but was unable to be followed due to semantic errors.
+
+---
+### 5xx Server Error Status Codes
+- **500 Internal Server Error**: A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
+- **502 Bad Gateway**: The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+- **503 Service Unavailable**: The server cannot handle the request (because it is overloaded or down for maintenance). Generally, this is a temporary state.
