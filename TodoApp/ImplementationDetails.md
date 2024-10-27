@@ -53,11 +53,19 @@
 - All four of the characteristics of User (Name, Age, Email, Password) are data.
 
 ---
+
 ### What is SQL?
+
 - _Pronounced as "S-Q-L" or "sequel"_
 - _Standard language for dealing with relational databases._
 - _SQL can be used to different things with database records._
-    - _Create new records_
-    - _Read records_
-    - _Update records_
-    - _Delete records_
+  - _Create new records_
+  - _Read records_
+  - _Update records_
+  - _Delete records_
+
+---
+
+### What is SQLAlchemy?
+- **SQLAlchemy is a SQL toolkit and Object-Relational Mapping (ORM) library for Python.**
+- **It provides a full suite of well known enterprise-level persistence patterns, designed for efficient and high-performing database access, adapted into a simple and Pythonic domain language.**
