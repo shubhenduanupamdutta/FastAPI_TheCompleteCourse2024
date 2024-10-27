@@ -37,3 +37,11 @@
 #### **book_2**: Enhancing the previous project by adding more features to the books API.
 
 _We will add Data Validation, Exception Handling, Status Codes, Swagger Configuration and Python Request Objects._
+
+---
+#### **todos**: Some more advanced concepts using TODOs API.
+_New Information will include:_
+- Full SQL Database (SQLite, PostgreSQL, and MySQL)
+- Authentication
+- Authorization
+- Hashing Passwords
