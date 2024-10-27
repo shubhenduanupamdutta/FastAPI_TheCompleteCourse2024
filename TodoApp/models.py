@@ -2,7 +2,7 @@ from database import Base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 
 
-class Users(Base):
+class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
