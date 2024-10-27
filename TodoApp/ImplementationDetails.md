@@ -162,48 +162,63 @@ DELETE FROM todos WHERE title='Learn Something new';
 - _Will delete the record from the todo table where the title is 'Learn Something new'. This will delete all the records where the title is 'Learn Something new'_
 
 ---
+
 ### Opening and Working with SQLite Database using command line
 
 #### Connecting to SQLite Database
+
 - **Move to the directory where the database is stored**
 - **Open the SQLite database using the command line**
+
 ```
 sqlite <database name>
 ```
+
 - In our case, the database name is `todos.db`
+
 ```sql
 sqlite todos.db
 ```
+
 - **This will open the SQLite database, todo.db**
 - **Now we can run the SQL queries to perform CRUD operations**
 
 #### Inserting one row into the database
+
 ```sql
 insert into todos (title, description, priority, complete) values ('Go to the store', 'Pick up eggs', 5, False);
 ```
+
 ```sql
 select * from todos;
 ```
+
 We get the output as:
+
 ```
 1|Go to the store|Pick up eggs|5|0
 ```
+
 **Id is auto generated, since we have set it as primary key**
 
 #### Changing the output format from SQLite
+
 ```sql
 .mode column
 ```
+
 ```bash
 id  title            description            priority  complete
 --  ---------------  ---------------------  --------  --------
 1   Go to the store  Pick up eggs           5         0
 2   Cut the lawn     Grass is getting long  3         0
-3   Feed the dog     He is getting hunbgry  5         0  
+3   Feed the dog     He is getting hunbgry  5         0
 ```
+
 ```sql
 .mode markdown
 ```
+
 ```bash
 | id |      title      |      description      | priority | complete |
 |----|-----------------|-----------------------|----------|----------|
@@ -211,9 +226,11 @@ id  title            description            priority  complete
 | 2  | Cut the lawn    | Grass is getting long | 3        | 0        |
 | 3  | Feed the dog    | He is getting hunbgry | 5        | 0        |
 ```
+
 ```sql
 .mode box
 ```
+
 ```bash
 ┌────┬─────────────────┬───────────────────────┬──────────┬──────────┐
 │ id │      title      │      description      │ priority │ complete │
@@ -223,9 +240,11 @@ id  title            description            priority  complete
 │ 3  │ Feed the dog    │ He is getting hunbgry │ 5        │ 0        │
 └────┴─────────────────┴───────────────────────┴──────────┴──────────┘
 ```
+
 ```sql
 .mode table
 ```
+
 ```bash
 +----+-----------------+-----------------------+----------+----------+
 | id |      title      |      description      | priority | complete |
@@ -237,7 +256,9 @@ id  title            description            priority  complete
 ```
 
 #### Deleting a row from the database
+
 **Current Status of database table**
+
 ```bash
 ┌────┬─────────────────┬───────────────────────┬──────────┬──────────┐
 │ id │      title      │      description      │ priority │ complete │
@@ -248,11 +269,15 @@ id  title            description            priority  complete
 │ 4  │ Test element    │ He is getting hungry  │ 5        │ 0        │
 └────┴─────────────────┴───────────────────────┴──────────┴──────────┘
 ```
+
 **Deleting the row with id 4**
+
 ```sql
 delete from todos where id=4;
 ```
+
 **Now the table looks like**
+
 ```bash
 ┌────┬─────────────────┬───────────────────────┬──────────┬──────────┐
 │ id │      title      │      description      │ priority │ complete │
@@ -264,13 +289,67 @@ delete from todos where id=4;
 ```
 
 ---
+
 ### Using SQLAlchemy to perform CRUD operations
+
 - **Getting all the records from the database**
+
 ```python
 db.query(Todo).all()
 ```
+
 - **Getting one record from the database**
+
 ```python
 db.query(Todo).filter_by(Todo.id == 1).first()
 ```
+
 _This will return the first record where the id is 1. `first()` is used to get the first record from the query result, this optimizes the query and tells to return as soon as you get the first record, and don't look for more records._
+
+---
+
+## One to Many Relationship
+
+---
+
+_**One to Many Relationship** is a type of relationship where a single record in one table can be related to multiple records in another table. For example, a single user can have multiple todos. This is a one to many relationship._
+
+- **In our case, a single user can have multiple todos.**
+- **We will create a one to many relationship between the User and Todo table.**
+- **We will create a new table User and add a foreign key to the Todo table.**
+
+---
+
+## Foreign Key (FK)
+
+---
+
+### What is Foreign Key?
+
+- **A foreign key (FK) is a column within a relational database table that provides a link between data in two tables.**
+- **A foreign key references a primary key in another table.**
+- **Most relational databases require a foreign key to be defined in a table, to link the table with another table.**
+
+---
+
+### Query to use foreign key
+
+```sql
+SELECT * FROM todos
+```
+
+**Above query will return all the records from the todos table**
+
+```sql
+SELECT * FROM users
+```
+
+**Above query will return all the records from the users table**
+
+```sql
+SELECT * FROM todos WHERE owner = 1;
+```
+**This query will get all todos where owners primary key is 1**
+
+---
+
