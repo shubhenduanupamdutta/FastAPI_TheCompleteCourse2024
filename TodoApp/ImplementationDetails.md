@@ -262,3 +262,15 @@ delete from todos where id=4;
 │ 3  │ Feed the dog    │ He is getting hunbgry │ 5        │ 0        │
 └────┴─────────────────┴───────────────────────┴──────────┴──────────┘
 ```
+
+---
+### Using SQLAlchemy to perform CRUD operations
+- **Getting all the records from the database**
+```python
+db.query(Todo).all()
+```
+- **Getting one record from the database**
+```python
+db.query(Todo).filter_by(Todo.id == 1).first()
+```
+_This will return the first record where the id is 1. `first()` is used to get the first record from the query result, this optimizes the query and tells to return as soon as you get the first record, and don't look for more records._
