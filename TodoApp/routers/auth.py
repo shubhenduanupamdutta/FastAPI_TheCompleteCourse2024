@@ -4,21 +4,22 @@ from database import DB_Dependency
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from models import User
+from oauth2 import create_access_token
 from passlib.context import CryptContext
-from schema import CreateUserRequest
+from schema import CreateUserRequest, Token
 
 router = APIRouter()
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def authenticate_user(username: str, password: str, db):
+def authenticate_user(username: str, password: str, db) -> User | None:
     user = db.query(User).filter(User.username == username).first()
     if not user:
-        return False
+        return None
     if not bcrypt_context.verify(password, user.hashed_password):
-        return False
-    return True
+        return None
+    return user
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -35,7 +36,7 @@ async def create_user(create_user_request: CreateUserRequest, db: DB_Dependency)
     return new_user
 
 
-@router.post("/token")
+@router.post("/token", response_model=Token)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: DB_Dependency
 ):
@@ -44,4 +45,6 @@ async def login_for_access_token(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
         )
-    return {"success": "Authentication Successful"}
+    token = create_access_token(user.username, user.id)  # type: ignore
+
+    return {"access_token": token, "token_type": "bearer"}
