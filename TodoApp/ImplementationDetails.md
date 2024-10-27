@@ -67,5 +67,198 @@
 ---
 
 ### What is SQLAlchemy?
+
 - **SQLAlchemy is a SQL toolkit and Object-Relational Mapping (ORM) library for Python.**
 - **It provides a full suite of well known enterprise-level persistence patterns, designed for efficient and high-performing database access, adapted into a simple and Pythonic domain language.**
+
+---
+
+### Basic SQL Queries
+
+#### Inserting Database Table
+
+```sql
+INSERT INTO todos (title, description, priority, complete)
+VALUES ('Go to store', 'To pick up eggs', 4, False);
+
+INSERT INTO todos (title, description, priority, complete)
+VALUES ('Haircut', 'Need to get length 1mm', 3, False);
+```
+
+#### Reading Data - SELECT SQL Query
+
+```sql
+SELECT * FROM todos;
+```
+
+_Will return all the records from the todo table_
+
+```sql
+SELECT title FROM todos;
+```
+
+_Will return only the title column from the todo table_
+
+```sql
+SELECT description FROM todos
+```
+
+_Will return only the description column from the todo table_
+
+```sql
+SELECT title, description FROM todos;
+```
+
+_Will return title and description columns from the todo table_
+
+#### WHERE Clause
+
+_Will return all the records from the the condition is met_
+
+```sql
+SELECT * FROM todos WHERE priority = 4;
+```
+
+_Will return all the records from the todo table where the priority is 4_
+
+```sql
+SELECT * FROM todos WHERE title='Feed Dog'
+```
+
+- _Will return all the records from the todo table where the title is 'Feed Dog'_
+
+```sql
+SELECT * FROM todos WHERE id=2
+```
+
+- _Will return all the records from the todo table where the id is 2_
+
+#### Update Clause - UPDATE SQL Query
+
+```sql
+UPDATE todos SET complete = True WHERE id = 5;
+```
+
+- _Will update the complete column to True where the id is 5_
+
+```sql
+UPDATE todos set complete=True WHERE title='Learn Something new';
+```
+
+- _Will update the complete column to True where the title is 'Learn Something new'. This will update all the records where the title is 'Learn Something new'_
+
+#### Delete Clause - DELETE SQL Query
+
+```sql
+DELETE FROM todos WHERE id = 5;
+```
+
+- _Will delete the record from the todo table where the id is 5_
+
+```sql
+DELETE FROM todos WHERE title='Learn Something new';
+```
+
+- _Will delete the record from the todo table where the title is 'Learn Something new'. This will delete all the records where the title is 'Learn Something new'_
+
+---
+### Opening and Working with SQLite Database using command line
+
+#### Connecting to SQLite Database
+- **Move to the directory where the database is stored**
+- **Open the SQLite database using the command line**
+```
+sqlite <database name>
+```
+- In our case, the database name is `todos.db`
+```sql
+sqlite todos.db
+```
+- **This will open the SQLite database, todo.db**
+- **Now we can run the SQL queries to perform CRUD operations**
+
+#### Inserting one row into the database
+```sql
+insert into todos (title, description, priority, complete) values ('Go to the store', 'Pick up eggs', 5, False);
+```
+```sql
+select * from todos;
+```
+We get the output as:
+```
+1|Go to the store|Pick up eggs|5|0
+```
+**Id is auto generated, since we have set it as primary key**
+
+#### Changing the output format from SQLite
+```sql
+.mode column
+```
+```bash
+id  title            description            priority  complete
+--  ---------------  ---------------------  --------  --------
+1   Go to the store  Pick up eggs           5         0
+2   Cut the lawn     Grass is getting long  3         0
+3   Feed the dog     He is getting hunbgry  5         0  
+```
+```sql
+.mode markdown
+```
+```bash
+| id |      title      |      description      | priority | complete |
+|----|-----------------|-----------------------|----------|----------|
+| 1  | Go to the store | Pick up eggs          | 5        | 0        |
+| 2  | Cut the lawn    | Grass is getting long | 3        | 0        |
+| 3  | Feed the dog    | He is getting hunbgry | 5        | 0        |
+```
+```sql
+.mode box
+```
+```bash
+┌────┬─────────────────┬───────────────────────┬──────────┬──────────┐
+│ id │      title      │      description      │ priority │ complete │
+├────┼─────────────────┼───────────────────────┼──────────┼──────────┤
+│ 1  │ Go to the store │ Pick up eggs          │ 5        │ 0        │
+│ 2  │ Cut the lawn    │ Grass is getting long │ 3        │ 0        │
+│ 3  │ Feed the dog    │ He is getting hunbgry │ 5        │ 0        │
+└────┴─────────────────┴───────────────────────┴──────────┴──────────┘
+```
+```sql
+.mode table
+```
+```bash
++----+-----------------+-----------------------+----------+----------+
+| id |      title      |      description      | priority | complete |
++----+-----------------+-----------------------+----------+----------+
+| 1  | Go to the store | Pick up eggs          | 5        | 0        |
+| 2  | Cut the lawn    | Grass is getting long | 3        | 0        |
+| 3  | Feed the dog    | He is getting hunbgry | 5        | 0        |
++----+-----------------+-----------------------+----------+----------+
+```
+
+#### Deleting a row from the database
+**Current Status of database table**
+```bash
+┌────┬─────────────────┬───────────────────────┬──────────┬──────────┐
+│ id │      title      │      description      │ priority │ complete │
+├────┼─────────────────┼───────────────────────┼──────────┼──────────┤
+│ 1  │ Go to the store │ Pick up eggs          │ 5        │ 0        │
+│ 2  │ Cut the lawn    │ Grass is getting long │ 3        │ 0        │
+│ 3  │ Feed the dog    │ He is getting hunbgry │ 5        │ 0        │
+│ 4  │ Test element    │ He is getting hungry  │ 5        │ 0        │
+└────┴─────────────────┴───────────────────────┴──────────┴──────────┘
+```
+**Deleting the row with id 4**
+```sql
+delete from todos where id=4;
+```
+**Now the table looks like**
+```bash
+┌────┬─────────────────┬───────────────────────┬──────────┬──────────┐
+│ id │      title      │      description      │ priority │ complete │
+├────┼─────────────────┼───────────────────────┼──────────┼──────────┤
+│ 1  │ Go to the store │ Pick up eggs          │ 5        │ 0        │
+│ 2  │ Cut the lawn    │ Grass is getting long │ 3        │ 0        │
+│ 3  │ Feed the dog    │ He is getting hunbgry │ 5        │ 0        │
+└────┴─────────────────┴───────────────────────┴──────────┴──────────┘
+```
