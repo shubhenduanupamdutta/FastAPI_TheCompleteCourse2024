@@ -1,14 +1,12 @@
-from typing import Annotated
-
 from database import DB_Dependency
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, HTTPException, status
 from models import User
-from oauth2 import create_access_token
+from oauth2 import OAuth2Form, create_access_token
 from passlib.context import CryptContext
 from schema import CreateUserRequest, Token
 
 router = APIRouter()
+
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -37,9 +35,7 @@ async def create_user(create_user_request: CreateUserRequest, db: DB_Dependency)
 
 
 @router.post("/token", response_model=Token)
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: DB_Dependency
-):
+async def login_for_access_token(form_data: OAuth2Form, db: DB_Dependency):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(
