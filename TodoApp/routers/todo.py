@@ -3,6 +3,7 @@ from typing import Annotated, TypeAlias
 from database import DB_Dependency
 from fastapi import APIRouter, HTTPException, Path, status
 from models import Todo
+from oauth2 import UserDependency
 from schema import TodoRequest
 
 router = APIRouter()
@@ -20,6 +21,7 @@ async def get_all_todos(db: DB_Dependency):
 @router.get("/{todo_id}", status_code=status.HTTP_200_OK)
 async def get_todo_by_id(db: DB_Dependency, todo_id: TodoId):
     """# This function is used to get a todo by its id"""
+
     todo_model = db.query(Todo).filter(Todo.id == todo_id).first()
     if todo_model is not None:
         return todo_model
@@ -27,9 +29,16 @@ async def get_todo_by_id(db: DB_Dependency, todo_id: TodoId):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_todo(db: DB_Dependency, todo_request: TodoRequest):
+async def create_todo(
+    db: DB_Dependency, todo_request: TodoRequest, user: UserDependency
+):
     """# This function is used to create a todo"""
-    todo_model = Todo(**todo_request.model_dump())
+
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
+    todo_model = Todo(**todo_request.model_dump(), owner=user.get("id"))
 
     db.add(todo_model)
     db.commit()

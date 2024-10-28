@@ -35,3 +35,6 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
         )
+
+
+UserDependency: TypeAlias = Annotated[dict, Depends(get_current_user)]
