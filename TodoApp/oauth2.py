@@ -19,13 +19,15 @@ def create_access_token(username: str, user_id: int):
     return jwt.encode(encode, settings.secret_key, algorithm=settings.algorithm)
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
+async def get_current_user(
+    token: Annotated[str, Depends(oauth2_bearer)],
+) -> dict[str, str | int]:
     try:
         payload = jwt.decode(
             token, settings.secret_key, algorithms=[settings.algorithm]
         )
-        username: str = payload.get("sub")  # type: ignore
-        user_id: int = payload.get("id")  # type: ignore
+        username: str | None = payload.get("sub")  # type: ignore
+        user_id: int | None = payload.get("id")  # type: ignore
         if username is None or user_id is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
