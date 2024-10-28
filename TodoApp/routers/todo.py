@@ -52,9 +52,13 @@ async def create_todo(
 
 
 @router.put("/{todo_id}", status_code=status.HTTP_200_OK)
-async def update_todo(db: DB_Dependency, todo_id: TodoId, todo_request: TodoRequest):
+async def update_todo(
+    user: UserDependency, db: DB_Dependency, todo_id: TodoId, todo_request: TodoRequest
+):
     """# This function is used to update a todo"""
-    todo_query = db.query(Todo).filter(Todo.id == todo_id)
+    todo_query = (
+        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner == user.get("id"))
+    )
     todo_model = todo_query.first()
     if todo_model is None:
         raise HTTPException(
@@ -67,9 +71,11 @@ async def update_todo(db: DB_Dependency, todo_id: TodoId, todo_request: TodoRequ
 
 
 @router.delete("/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_todo(db: DB_Dependency, todo_id: TodoId):
+async def delete_todo(user: UserDependency, db: DB_Dependency, todo_id: TodoId):
     """# This function is used to delete a todo"""
-    todo_query = db.query(Todo).filter(Todo.id == todo_id)
+    todo_query = (
+        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner == user.get("id"))
+    )
     todo_model = todo_query.first()
     if todo_model is None:
         raise HTTPException(
