@@ -10,8 +10,8 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 OAuth2Form: TypeAlias = Annotated[OAuth2PasswordRequestForm, Depends()]
 
 
-def create_access_token(username: str, user_id: int):
-    encode = {"sub": username, "id": user_id}
+def create_access_token(username: str, user_id: int, role: str):
+    encode = {"sub": username, "id": user_id, "role": role}
     expires = datetime.now(timezone.utc) + timedelta(
         minutes=settings.access_token_expire_minutes
     )
@@ -28,11 +28,12 @@ async def get_current_user(
         )
         username: str | None = payload.get("sub")  # type: ignore
         user_id: int | None = payload.get("id")  # type: ignore
-        if username is None or user_id is None:
+        user_role: str | None = payload.get("role")  # type: ignore
+        if username is None or user_id is None or user_role is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
             )
-        return {"username": username, "id": user_id}
+        return {"username": username, "id": user_id, "user_role": user_role}
     except ExpiredSignatureError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

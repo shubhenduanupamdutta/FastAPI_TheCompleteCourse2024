@@ -8,7 +8,6 @@ from schema import TodoRequest
 
 router = APIRouter()
 
-
 TodoId: TypeAlias = Annotated[int, Path(ge=1)]
 
 
