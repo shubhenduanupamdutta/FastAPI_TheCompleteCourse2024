@@ -4,7 +4,7 @@ from typing import Annotated, TypeAlias
 from config import settings
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
+from jose import ExpiredSignatureError, JWTError, jwt
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 OAuth2Form: TypeAlias = Annotated[OAuth2PasswordRequestForm, Depends()]
@@ -31,6 +31,11 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
             )
         return {"username": username, "id": user_id}
+    except ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired. Create a new one.",
+        )
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
