@@ -20,3 +20,7 @@ class CreateUserRequest(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class UserVerification(BaseModel):
+    password: str
+    new_password: str
