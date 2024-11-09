@@ -48,3 +48,54 @@
 - **Setup the tables and data within the production DBMS.**
 - **Connect FastAPI to the production DBMS.**
 - **Learn how to use the production DBMS with FastAPI, i.e. CRUD Operations.**
+
+---
+
+## What is PostgreSQL?
+
+---
+ _PostgreSQL is more of a production database compared to SQLite. It is extremely popular and is among the top RDBMS (Relational Database Management System). The main purpose of a RDBMS is to provide management for data storage, access and performance on the data._
+
+### PostgreSQL is
+- **Production Ready**
+- **Open Source relational database management system**
+- **Secure**
+- **Requires a server to run**
+- **Scalable**
+
+### What will we cover?
+- **Installation of PostgreSQL**
+- **Setup SQL Tables**
+- **Connect FastAPI to PostgreSQL**
+
+### SQL Code to create appropriate tables for _Project 3 - TodoApp_
+```sql
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id SERIAL,
+    email varchar(200) DEFAULT NULL,
+    username varchar(45) DEFAULT NULL,
+    first_name varchar(45) DEFAULT NULL,
+    last_name varchar(45) DEFAULT NULL,
+    hashed_password varchar(1000) DEFAULT NULL,
+    is_active boolean DEFAULT NULL,
+    role varchar(45) DEFAULT NULL,
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS todos;
+
+CREATE TABLE todos (
+    id SERIAL,
+    title varchar(200) DEFAULT NULL,
+    description varchar(500) DEFAULT NULL,
+    priority integer DEFAULT NULL,
+    owner int DEFAULT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (owner) REFERENCES users (id)
+);
+```
+- Above SQL code will create two tables: `users` and `todos` in PostgreSQL or MySQL.
+
+### Connecting FastAPI to PostgreSQL
