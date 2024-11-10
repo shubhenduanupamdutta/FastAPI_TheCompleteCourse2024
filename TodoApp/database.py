@@ -1,19 +1,28 @@
 from typing import Annotated, Generator, TypeAlias
+
+from config import settings
 from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./TodosApp.db"
+# SQLALCHEMY_DATABASE_URL = "sqlite:///./TodosApp.db" # To connect with SQLite database
+
+# URL to connect with PostgreSQL database
+SQLALCHEMY_DATABASE_URL = f"postgresql+psycopg://{settings.db_user}:{settings.db_password}@{settings.db_host}:5432/{settings.db_name}"
 
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+# engine = create_engine(
+#     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+# ) # To connect with SQLite database
+
+# Connecting with PostgreSQL database
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
 
 def get_db() -> Generator[Session, None, None]:
     """This function is used to get the database session yield it and close it after use, when the
@@ -28,5 +37,6 @@ def get_db() -> Generator[Session, None, None]:
         yield db
     finally:
         db.close()
+
 
 DB_Dependency: TypeAlias = Annotated[Session, Depends(get_db)]

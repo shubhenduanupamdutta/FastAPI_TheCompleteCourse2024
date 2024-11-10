@@ -91,11 +91,18 @@ CREATE TABLE todos (
     title varchar(200) DEFAULT NULL,
     description varchar(500) DEFAULT NULL,
     priority integer DEFAULT NULL,
-    owner int DEFAULT NULL,
+    owner_id int DEFAULT NULL,
+    complete boolean DEFAULT FALSE,
     PRIMARY KEY (id),
-    FOREIGN KEY (owner) REFERENCES users (id)
+    FOREIGN KEY (owner_id) REFERENCES users (id)
 );
 ```
 - Above SQL code will create two tables: `users` and `todos` in PostgreSQL or MySQL.
 
 ### Connecting FastAPI to PostgreSQL
+
+- **Install `psycopg` package which is a PostgreSQL adapter for Python.**
+```bash
+pip install "psycopg[binary]"
+```
+This will install latest version of `psycopg` which is 3.2.3 as of now on 9 November 2024.

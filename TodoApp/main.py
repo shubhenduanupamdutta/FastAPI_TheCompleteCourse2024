@@ -1,3 +1,5 @@
+import logging
+
 import models
 from database import engine
 from fastapi import FastAPI
