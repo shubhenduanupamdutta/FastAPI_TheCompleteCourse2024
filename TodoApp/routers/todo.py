@@ -14,7 +14,7 @@ TodoId: TypeAlias = Annotated[int, Path(ge=1)]
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_all_todos(user: UserDependency, db: DB_Dependency):
     """# This function is used to get all the todos from the database"""
-    return db.query(Todo).filter(Todo.owner == user.get("id")).all()
+    return db.query(Todo).filter(Todo.owner_id == user.get("id")).all()
 
 
 @router.get("/{todo_id}", status_code=status.HTTP_200_OK)
@@ -24,7 +24,7 @@ async def get_todo_by_id(user: UserDependency, db: DB_Dependency, todo_id: TodoI
     todo_model = (
         db.query(Todo)
         .filter(Todo.id == todo_id)
-        .filter(Todo.owner == user.get("id"))
+        .filter(Todo.owner_id == user.get("id"))
         .first()
     )
     if todo_model is not None:
@@ -42,7 +42,7 @@ async def create_todo(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
         )
-    todo_model = Todo(**todo_request.model_dump(), owner=user.get("id"))
+    todo_model = Todo(**todo_request.model_dump(), owner_id=user.get("id"))
 
     db.add(todo_model)
     db.commit()
@@ -56,7 +56,7 @@ async def update_todo(
 ):
     """# This function is used to update a todo"""
     todo_query = (
-        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner == user.get("id"))
+        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
     )
     todo_model = todo_query.first()
     if todo_model is None:
@@ -73,7 +73,7 @@ async def update_todo(
 async def delete_todo(user: UserDependency, db: DB_Dependency, todo_id: TodoId):
     """# This function is used to delete a todo"""
     todo_query = (
-        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner == user.get("id"))
+        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
     )
     todo_model = todo_query.first()
     if todo_model is None:
