@@ -64,29 +64,82 @@
 ## Getting started with Testing in FastAPI
 
 ---
+
 ### First Step
+
 - **Create a new directory on our project call `test`**
 - **Inside our test directory create a new file called `_init_.py`**
 - **This file is required to make Python treat the directory as a package.**
 - **Inside the `test` directory create a new file called `test_example.py`**
 
 ### `test_example.py`
+
 - **Pytest will run all tests automatically that sit within files that start with `test_`**
 - **For our demo, all tests will be in `test_example.py` so pytest can find them and run them.**
 - **When we write tests for our application, we will create new tests from a new file that matches naming convention of project.**
 - Example: `todo.py` will be tested in `test_todo.py`
 
 ### Create our first unit test
+
 - **Write our first assertion test.**
-    - _Assertion = Statement that checks if a condition is true._
-    - _If the condition is true, the test passes._
-    - _If the condition is false, the test fails._
+  - _Assertion = Statement that checks if a condition is true._
+  - _If the condition is true, the test passes._
+  - _If the condition is false, the test fails._
 - **In `test_example.py` write the following code:**
+
 ```python
 def test_equal_or_not():
     assert 1 == 1
 ```
+
 - **Run the test by typing `pytest` in the terminal.**
+
 ```bash
 $ pytest
 ```
+
+---
+
+## Pytest Basics
+
+---
+- #### Validate Integers
+```python
+def test_equal():
+    assert 1 == 1
+```
+- #### Validate Instances
+```python
+def test_instance():
+    assert isinstance(1, int)
+    assert not isinstance(1, str)
+```
+
+- #### Validate Booleans
+```python
+def test_boolean():
+    validated: True
+    assert validated is True
+    assert ('hello' == 'world') is False
+```
+- #### Validate Types
+```python
+def test_type():
+    assert type("Hello") is str
+    assert type("World") is not int
+```
+- #### Validate Greater and Less Than
+```python
+def test_greater_and_less_than():
+    assert 10 > 5
+    assert 5 < 10
+```
+- #### Validate Lists
+```python
+def test_list():
+    num_list = [1, 2, 3, 4, 5]
+    any_list = [False, False]
+    assert 1 in num_list
+    assert 7 not in num_list
+    assert all(num_list)
+    assert not any(any_list)
