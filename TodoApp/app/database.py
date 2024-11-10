@@ -3,7 +3,7 @@ from typing import Annotated, Generator, TypeAlias
 from .config import settings
 from fastapi import Depends
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./TodosApp.db" # To connect with SQLite database
