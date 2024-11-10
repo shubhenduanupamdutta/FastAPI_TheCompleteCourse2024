@@ -47,3 +47,22 @@ async def change_password(
     db.commit()
     db.refresh(user_model)
     return user_model
+
+
+@router.put("/phone_number/{phone_number}", status_code=status.HTTP_204_NO_CONTENT)
+async def change_phone_number(
+    user: UserDependency, db: DB_Dependency, phone_number: str
+):
+    """# This function is used to change the phone number of the user
+
+    - user (UserDependency): UserDependency is a dependency that is used to get the user details from the JWT token
+    - db (DB_Dependency): DB_Dependency is a dependency that is used to get the database session
+    - phone_number (str): The new phone number of the user
+    """
+
+    user_model = db.query(User).filter(User.id == user.get("id")).first()
+    user_model.phone_number = phone_number  # type: ignore
+    db.add(user_model)
+    db.commit()
+    db.refresh(user_model)
+    return user_model
