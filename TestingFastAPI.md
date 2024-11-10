@@ -161,7 +161,9 @@ def test_list():
 ## Pytest Objects
 
 ---
+
 - #### We can create our Pytest objects to test our FastAPI application.
+
 ```python
 class Student:
     def __init__(self, first_name: str, last_name: str, major: str, years: int):
@@ -170,8 +172,10 @@ class Student:
         self.major = major
         self.years = years
 ```
+
 - #### Suppose we have a `Student` class as shown above.
 - #### We can create a test to validate the object.
+
 ```python
 def test_person_initialization():
     p = Student("John", "Doe", "Computer Science", 3)
@@ -180,9 +184,11 @@ def test_person_initialization():
     assert p.major == "Computer Science"
     assert p.years == 3
 ```
+
 - #### If we have to create a new object for every single function, every time, that will take a lot of time.
 - #### Pytest allows us to be able to use reusability on some items by calling something called `Fixture`.
 - #### For `Fixture` we create a function that will return the object we want to test.
+
 ```python
 @pytest.fixture
 def default_student():
@@ -193,3 +199,55 @@ def test_person_initialization(default_student):
     assert default_student.last_name == "Doe", "Last Name should be Doe"
     assert default_student.major == "Computer Science"
     assert default_student.years == 3
+```
+
+---
+
+## Test Database
+
+---
+- #### Create a fake/test database to store data.
+- #### Create testing dependencies that are separate from our production dependency.
+- #### This way we can do integration testing to make sure our entire project is working correctly when we run our tests.
+- #### App is live = Production Dependency
+- #### App is in testing = Testing Dependency
+
+---
+## Testing Dependencies
+---
+- #### Create a new file called `test_todo.py` in the `test` directory, which will test our `todo.py` file.
+- #### Create a new database engine for our testing environment.
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.pool import StaticPool
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}, poolclass=StaticPool
+)
+```
+- #### Create a new `SessionLocal` for our testing environment.
+```python
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base.metadata.create_all(bind=engine)
+```
+- #### Setup `get_testing_db` dependency and override `get_db` dependency.
+```python
+def override_get_db():
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+app.dependency_overrides[get_db] = override_get_db
+```
+- #### Mock our current logged in user for testing
+```python
+def override_get_current_user():
+    return {"username": "shubhenduanupam", "id": 1, "user_role": "admin"}
+app.dependency_overrides[get_current_user] = override_get_current_user
+```
+- #### Create a new `client` for our testing environment.
+```python
+client = TestClient(app)
+```
