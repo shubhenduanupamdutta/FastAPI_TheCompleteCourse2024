@@ -194,10 +194,64 @@ pip install alembic
 - **After we initialize our project with Alembic, two new items will appear in our project: `alembic.ini` and `alembic` folder.**
 - **These are created automatically by alembic so we can upgrade, downgrade and keep data integrity within our database.**
 - #### `alembic.ini` is the configuration file for Alembic.
-    - _File that alembic looks for when invoked._
-    - _Contains a bunch of configuration information for Alembic, that we are able to change to match our needs._
+  - _File that alembic looks for when invoked._
+  - _Contains a bunch of configuration information for Alembic, that we are able to change to match our needs._
 - #### `alembic` folder
-    - _Has all environment information for Alembic._
-    - _Holds all revision of your application._
-    - _Where you can call the migrations for upgrading and downgrading._
- 
+  - _Has all environment information for Alembic._
+  - _Holds all revision of your application._
+  - _Where you can call the migrations for upgrading and downgrading._
+
+### Alembic Revision
+
+- **Alembic revision is how we create a new alembic file where we can add some type of database upgrade.**
+- **When we run:**
+
+```bash
+alembic revision -m "Create phone_number column"
+```
+
+- **Above command will create a new revision file in the `alembic` folder.**
+- **This file will have a unique identifier and a message that we can use to identify what the revision is doing.**
+
+### Alembic Upgrade
+
+- **Alembic upgrade is how we apply the revision to the database.**
+- **We can add a function `upgrade` to the revision file that will be called when we run the upgrade command.**
+
+```python
+def upgrade():
+    op.add_column('users', sa.Column('phone_number', sa.String(45)), nullable=True)
+```
+
+- **Above code will add a new column `phone_number` to the `users` table, without changing the data that is already in the table.**
+- **To apply the upgrade, we run:**
+
+```bash
+alembic upgrade head
+```
+
+or
+
+```bash
+alembic upgrade <revision #id>
+```
+
+### Alembic Downgrade
+
+- **Alembic downgrade is how we remove the revision from the database.**
+- **We can add a function `downgrade` to the revision file that will be called when we run the downgrade command.**
+
+```python
+def downgrade():
+    op.drop_column('users', 'phone_number')
+```
+
+- **Above code will drop the column `phone_number` from the `users` table.**
+- **Previous data within the database will not change, unless it was dependent on the column that was dropped.**
+- **To apply the downgrade, we run:**
+
+```bash
+alembic downgrade -1
+```
+
+- **Above command will downgrade the database to the previous revision.**
