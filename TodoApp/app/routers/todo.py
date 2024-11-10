@@ -1,7 +1,8 @@
 from typing import Annotated, TypeAlias
 
-from ..database import DB_Dependency
 from fastapi import APIRouter, HTTPException, Path, status
+
+from ..database import DB_Dependency
 from ..models import Todo
 from ..oauth2 import UserDependency
 from ..schema import TodoRequest
@@ -56,7 +57,9 @@ async def update_todo(
 ):
     """# This function is used to update a todo"""
     todo_query = (
-        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
+        db.query(Todo)
+        .filter(Todo.id == todo_id)
+        .filter(Todo.owner_id == user.get("id"))
     )
     todo_model = todo_query.first()
     if todo_model is None:
@@ -73,7 +76,9 @@ async def update_todo(
 async def delete_todo(user: UserDependency, db: DB_Dependency, todo_id: TodoId):
     """# This function is used to delete a todo"""
     todo_query = (
-        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
+        db.query(Todo)
+        .filter(Todo.id == todo_id)
+        .filter(Todo.owner_id == user.get("id"))
     )
     todo_model = todo_query.first()
     if todo_model is None:
