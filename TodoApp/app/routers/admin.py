@@ -1,9 +1,9 @@
 from typing import Annotated
 
-from database import DB_Dependency
+from ..database import DB_Dependency
 from fastapi import APIRouter, HTTPException, Path, status
-from models import Todo
-from oauth2 import UserDependency
+from ..models import Todo
+from ..oauth2 import UserDependency
 
 router = APIRouter()
 

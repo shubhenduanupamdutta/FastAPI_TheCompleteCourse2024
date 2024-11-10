@@ -1,9 +1,9 @@
-from database import DB_Dependency
+from ..database import DB_Dependency
 from fastapi import APIRouter, HTTPException, status
-from models import User
-from oauth2 import OAuth2Form, create_access_token
+from ..models import User
+from ..oauth2 import OAuth2Form, create_access_token
 from passlib.context import CryptContext
-from schema import CreateUserRequest, Token
+from ..schema import CreateUserRequest, Token
 
 router = APIRouter()
 

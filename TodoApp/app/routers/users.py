@@ -1,9 +1,9 @@
-from database import DB_Dependency
+from ..database import DB_Dependency
 from fastapi import APIRouter, HTTPException, status
-from models import User
-from oauth2 import UserDependency
+from ..models import User
+from ..oauth2 import UserDependency
 from passlib.context import CryptContext
-from schema import UserVerification
+from ..schema import UserVerification
 
 router = APIRouter()
 

@@ -1,10 +1,10 @@
 from typing import Annotated, TypeAlias
 
-from database import DB_Dependency
+from ..database import DB_Dependency
 from fastapi import APIRouter, HTTPException, Path, status
-from models import Todo
-from oauth2 import UserDependency
-from schema import TodoRequest
+from ..models import Todo
+from ..oauth2 import UserDependency
+from ..schema import TodoRequest
 
 router = APIRouter()
 
