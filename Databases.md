@@ -132,3 +132,72 @@ _MySQL is another popular RDBMS (Relational Database Management System). It is o
 
 ---
 
+# Alembic
+
+---
+
+## What is Alembic?
+
+---
+
+### Alembic is
+
+- **Lightweight database migration tool for usage with SQLAlchemy.**
+- **Migration tool that allows us to plan, transfer and upgrade resource within databases.**
+- **A tool that allows you to change a SQLAlchemy database table after it has been created.**
+
+#### NOTE: Currently SQLAlchemy does not support changing a table after it has been created. Alembic is a tool that allows you to do this.
+
+---
+
+## How does Alembic work?
+
+---
+
+- **Alembic provides the creation and invocation of change management scripts.**
+- **This allows you to be able to create migration environments and be able to change data however you see fit.**
+
+### Alembic Workflow
+
+- **We already have some data within our database.**
+- **Let's take an example of following user table:**
+
+| id  | email             | first_name | other_data |
+| --- | ----------------- | ---------- | ---------- |
+| 1   | shubh@gmail.co.in | Shubh      | Other Data |
+
+- **Now we want to add a new column called `phone_number` to the table. If we want to do this using SQLAlchemy, we would have to drop the table and recreate it.**
+
+| id  | email             | first_name | phone_number | other_data |
+| --- | ----------------- | ---------- | ------------ | ---------- |
+| 1   | shubh@gmail.co.in | Shubh      | 1234567890   | Other Data |
+
+- **Alembic allows us to do this without dropping the table. It is a powerful migration tool that allows us to modify our database schema.**
+- **As our application grows, we will need to make changes to our database schema. Alembic allows us to do this and keep up with rapid development requirements.**
+- **We will be using Alembic on tables that already have data. This allows us to be able to continually create additional content that works within our application.**
+
+- **First we need to install Alembic.**
+
+```bash
+pip install alembic
+```
+
+- **After installing Alembic, we have access to some commands.**
+
+| Alembic Command                | Description                                    |
+| ------------------------------ | ---------------------------------------------- |
+| `alembic init <folder name>`   | Initialize a new generic Alembic environment.  |
+| `alembic revision -m "msg"`    | Create a new revision file for the environment |
+| `alembic upgrade <revision #>` | Upgrade Database to a specified revision.      |
+| `alembic downgrade -1`         | Downgrade Database to a previous revision.     |
+
+- **After we initialize our project with Alembic, two new items will appear in our project: `alembic.ini` and `alembic` folder.**
+- **These are created automatically by alembic so we can upgrade, downgrade and keep data integrity within our database.**
+- #### `alembic.ini` is the configuration file for Alembic.
+    - _File that alembic looks for when invoked._
+    - _Contains a bunch of configuration information for Alembic, that we are able to change to match our needs._
+- #### `alembic` folder
+    - _Has all environment information for Alembic._
+    - _Holds all revision of your application._
+    - _Where you can call the migrations for upgrading and downgrading._
+ 
