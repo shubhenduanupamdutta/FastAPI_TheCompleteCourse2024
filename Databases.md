@@ -54,9 +54,11 @@
 ## What is PostgreSQL?
 
 ---
- _PostgreSQL is more of a production database compared to SQLite. It is extremely popular and is among the top RDBMS (Relational Database Management System). The main purpose of a RDBMS is to provide management for data storage, access and performance on the data._
+
+_PostgreSQL is more of a production database compared to SQLite. It is extremely popular and is among the top RDBMS (Relational Database Management System). The main purpose of a RDBMS is to provide management for data storage, access and performance on the data._
 
 ### PostgreSQL is
+
 - **Production Ready**
 - **Open Source relational database management system**
 - **Secure**
@@ -64,11 +66,13 @@
 - **Scalable**
 
 ### What will we cover?
+
 - **Installation of PostgreSQL**
 - **Setup SQL Tables**
 - **Connect FastAPI to PostgreSQL**
 
 ### SQL Code to create appropriate tables for _Project 3 - TodoApp_
+
 ```sql
 DROP TABLE IF EXISTS users;
 
@@ -97,12 +101,34 @@ CREATE TABLE todos (
     FOREIGN KEY (owner_id) REFERENCES users (id)
 );
 ```
+
 - Above SQL code will create two tables: `users` and `todos` in PostgreSQL or MySQL.
 
 ### Connecting FastAPI to PostgreSQL
 
 - **Install `psycopg` package which is a PostgreSQL adapter for Python.**
+
 ```bash
 pip install "psycopg[binary]"
 ```
+
 This will install latest version of `psycopg` which is 3.2.3 as of now on 9 November 2024.
+
+---
+
+## What is MySQL?
+
+---
+
+_MySQL is another popular RDBMS (Relational Database Management System). It is open source and is widely used in the industry. MySQL is a great choice for medium to large application._
+
+### MySQL is
+
+- **Open-Source relational database management system**
+- **Requires a server to run**
+- **Scalable**
+- **Production Ready**
+- **Secure**
+
+---
+
