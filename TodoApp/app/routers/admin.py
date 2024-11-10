@@ -17,7 +17,7 @@ async def get_all(user: UserDependency, db: DB_Dependency):
     return db.query(Todo).all()
 
 
-@router.get("/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_todo(
     user: UserDependency, db: DB_Dependency, todo_id: Annotated[int, Path(ge=1)]
 ):
