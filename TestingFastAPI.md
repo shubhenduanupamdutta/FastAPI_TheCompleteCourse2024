@@ -103,12 +103,16 @@ $ pytest
 ## Pytest Basics
 
 ---
+
 - #### Validate Integers
+
 ```python
 def test_equal():
     assert 1 == 1
 ```
+
 - #### Validate Instances
+
 ```python
 def test_instance():
     assert isinstance(1, int)
@@ -116,25 +120,32 @@ def test_instance():
 ```
 
 - #### Validate Booleans
+
 ```python
 def test_boolean():
     validated: True
     assert validated is True
     assert ('hello' == 'world') is False
 ```
+
 - #### Validate Types
+
 ```python
 def test_type():
     assert type("Hello") is str
     assert type("World") is not int
 ```
+
 - #### Validate Greater and Less Than
+
 ```python
 def test_greater_and_less_than():
     assert 10 > 5
     assert 5 < 10
 ```
+
 - #### Validate Lists
+
 ```python
 def test_list():
     num_list = [1, 2, 3, 4, 5]
@@ -143,3 +154,42 @@ def test_list():
     assert 7 not in num_list
     assert all(num_list)
     assert not any(any_list)
+```
+
+---
+
+## Pytest Objects
+
+---
+- #### We can create our Pytest objects to test our FastAPI application.
+```python
+class Student:
+    def __init__(self, first_name: str, last_name: str, major: str, years: int):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.major = major
+        self.years = years
+```
+- #### Suppose we have a `Student` class as shown above.
+- #### We can create a test to validate the object.
+```python
+def test_person_initialization():
+    p = Student("John", "Doe", "Computer Science", 3)
+    assert p.first_name == "John", "First Name should be John"
+    assert p.last_name == "Doe", "Last Name should be Doe"
+    assert p.major == "Computer Science"
+    assert p.years == 3
+```
+- #### If we have to create a new object for every single function, every time, that will take a lot of time.
+- #### Pytest allows us to be able to use reusability on some items by calling something called `Fixture`.
+- #### For `Fixture` we create a function that will return the object we want to test.
+```python
+@pytest.fixture
+def default_student():
+    return Student("John", "Doe", "Computer Science", 3)
+
+def test_person_initialization(default_student):
+    assert default_student.first_name == "John", "First Name should be John"
+    assert default_student.last_name == "Doe", "Last Name should be Doe"
+    assert default_student.major == "Computer Science"
+    assert default_student.years == 3
