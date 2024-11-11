@@ -1,3 +1,4 @@
+from typing import Generator
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import StaticPool, create_engine, text
@@ -65,7 +66,7 @@ def test_todo():
         connection.commit()
 
 @pytest.fixture
-def test_user():
+def test_user() -> Generator[User, None, None]:
     user = User(
         username="roohbaba",
         email="roohbaba@gmail.co.in",
