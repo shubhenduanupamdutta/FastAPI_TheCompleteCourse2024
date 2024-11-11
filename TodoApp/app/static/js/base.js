@@ -177,6 +177,7 @@
 
             if (data.password !== data.password2) {
                 alert("Passwords do not match");
+                console.log(data.password, data.password2);
                 return;
             }
 
@@ -191,6 +192,7 @@
             };
 
             try {
+                console.log(payload);
                 const response = await fetch('/auth', {
                     method: 'POST',
                     headers: {
