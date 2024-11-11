@@ -1,6 +1,7 @@
 # import models
 # from database import engine
 from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from .routers import admin, auth, todo, users
@@ -11,6 +12,7 @@ app = FastAPI()
 # Will only run once and if only the database is not created
 
 templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 @app.get("/")
