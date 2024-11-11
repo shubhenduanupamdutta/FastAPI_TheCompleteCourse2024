@@ -1,13 +1,26 @@
+from fastapi import APIRouter, HTTPException, Request, status
+from fastapi.templating import Jinja2Templates
+from passlib.context import CryptContext
+
 from ..database import DB_Dependency
-from fastapi import APIRouter, HTTPException, status
 from ..models import User
 from ..oauth2 import OAuth2Form, create_access_token
-from passlib.context import CryptContext
 from ..schema import CreateUserRequest, Token
 
 router = APIRouter()
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+templates = Jinja2Templates(directory="app/templates")
+
+
+### Pages ###
+@router.get("/login-page")
+def render_login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+### Endpoints ###
 
 
 def authenticate_user(username: str, password: str, db) -> User | None:
