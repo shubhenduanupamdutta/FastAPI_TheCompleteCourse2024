@@ -1,8 +1,8 @@
 # import models
 # from database import engine
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 
 from .routers import admin, auth, todo, users
 
@@ -11,13 +11,12 @@ app = FastAPI()
 # models.Base.metadata.create_all(bind=engine)  # Not needed after using Alembic
 # Will only run once and if only the database is not created
 
-templates = Jinja2Templates(directory="app/templates")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 @app.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+    return RedirectResponse(url="/todo/todo-page", status_code=status.HTTP_302_FOUND)
 
 
 @app.get("/healthy")
