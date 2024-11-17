@@ -22,8 +22,11 @@ _**FastAPI** is a modern, fast (high-performance), web framework for building AP
 ---
 
 - #### Few Bugs - _FastAPI allows you to develop APIs with fewer bugs with all the data validation that is embedded. You can see reduction of about 40% of human error and bugs._
+
 - #### Quick & Easy - _FastAPI is designed to be quick and easy to use. It is designed to be simple and intuitive to use, while still providing powerful features._
+
 - #### Robust - _With FastAPI you can get production ready code in minutes, with automatic and dynamic documentation._
+
 - #### Standards - _FastAPI uses OpenAPI standards and JSON Schema._
 
 ---
@@ -68,7 +71,7 @@ async def read_item(item_id: int):
 
 - **In the above example, `item_id` is a dynamic path parameter.**
 
-#### NOTE: Order of the path parameters is important.
+#### NOTE: Order of the path parameters is important
 
 ```python
 @app.get("/users/{user_id}")
@@ -106,6 +109,7 @@ async def read_user_me():
 - **Used to create data.**
 - **Post can have a body that has additional information, that get request do not have.**
 - **Example of Body:**
+
   ```json
   {
     "title": "Concepts of Physics",
@@ -113,6 +117,7 @@ async def read_user_me():
     "category": "Physics"
   }
   ```
+
 - **In the above example, `title`, `author` and `category` are the keys and `Concepts of Physics`, `H.C. Verma` and `Physics` are the values. the body is in JSON format. And the whole thing can be passed to the server using the POST request method.**
 
 ---
@@ -126,6 +131,7 @@ async def read_user_me():
 - **Used to update data.**
 - **Put can have a body that has additional information (like POST) that GET does not have.**
 - **Example of Body:**
+
   ```json
   {
     "title": "Concepts of Physics",
@@ -133,6 +139,7 @@ async def read_user_me():
     "category": "Science"
   }
   ```
+
 - **In the above example, `title`, `author` and `category` are the keys and `Concepts of Physics`, `H.C. Verma` and `Science` are the values. The body is in JSON format. And the whole thing can be passed to the server using the PUT request method.**
 
 ---
@@ -182,13 +189,17 @@ class Book(BaseModel):
 ## Status Codes
 
 ---
+
 ### What are Status Codes?
+
 - **An HTTP Status Code is used to help the client (the user or system submitting the data to the server) to understand what happened on the server side application.**
 - **Status Codes are three digit numbers, and are international standard on how a Client/Server should handle the result of the request.**
 - **It allows everyone to understand what happened, whether their request was successful or not.**
 
 ---
+
 ### Most Common Status Codes
+
 - **1xx**: Informational Response -> Request received, continuing process ...etc.
 - **2xx**: Success -> The action was successfully received, understood, and accepted.
 - **3xx**: Redirection -> Further action must be taken in order to complete the request.
@@ -196,13 +207,17 @@ class Book(BaseModel):
 - **5xx**: Server Error -> The server failed to fulfill an apparently valid request.
 
 ---
+
 ### 2xx Success Status Codes
+
 - **200 OK**: Standard response for successful HTTP requests. Commonly used for successful GET requests when data is being returned.
 - **201 Created**: The request has been fulfilled, resulting in the creation of a new resource by POST requests.
 - **204 No Content**: The server has successfully fulfilled the request and that there is no additional content to send in the response payload body, commonly used with PUT and DELETE requests.
 
 ---
+
 ### 4xx Client Error Status Codes
+
 - **400 Bad Request**: The server cannot or will not process the request due to an apparent client error. Commonly used for invalid data in the request.
 - **401 Unauthorized**: Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.
 - **403 Forbidden**: The request was valid, but the server is refusing action. The user might not have the necessary permissions for a resource, or may need an account of some sort.
@@ -211,7 +226,9 @@ class Book(BaseModel):
 - **422 Unprocessable Entity**: The request was well-formed but was unable to be followed due to semantic errors.
 
 ---
+
 ### 5xx Server Error Status Codes
+
 - **500 Internal Server Error**: A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
 - **502 Bad Gateway**: The server was acting as a gateway or proxy and received an invalid response from the upstream server.
 - **503 Service Unavailable**: The server cannot handle the request (because it is overloaded or down for maintenance). Generally, this is a temporary state.

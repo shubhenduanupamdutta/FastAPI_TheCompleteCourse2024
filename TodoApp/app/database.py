@@ -1,10 +1,10 @@
 from typing import Annotated, Generator, TypeAlias
 
-from .config import settings
 from fastapi import Depends
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session, declarative_base, sessionmaker
+
+from .config import settings
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./TodosApp.db" # To connect with SQLite database
 
@@ -26,8 +26,8 @@ Base = declarative_base()
 
 def get_db() -> Generator[Session, None, None]:
     """This function is used to get the database session yield it and close it after use, when the
-    session is used and control is returned. This is done to ensure that the session is closed after
-    use and to avoid memory leaks.
+    session is used and control is returned. This is done to ensure that the session is closed
+    after use and to avoid memory leaks.
 
     Yields:
         sessionmaker[Session]: The database session to be used

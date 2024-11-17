@@ -9,6 +9,7 @@ class TodoRequest(BaseModel):
     priority: int = Field(ge=1, le=5)
     complete: bool
 
+
 class CreateUserRequest(BaseModel):
     username: str
     email: str
@@ -18,9 +19,11 @@ class CreateUserRequest(BaseModel):
     role: str
     phone_number: str
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
+
 
 class UserVerification(BaseModel):
     password: str

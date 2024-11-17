@@ -1,4 +1,5 @@
 from typing import Generator
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import StaticPool, create_engine, text
@@ -64,6 +65,7 @@ def test_todo():
     with engine.connect() as connection:
         connection.execute(text("delete from todos"))
         connection.commit()
+
 
 @pytest.fixture
 def test_user() -> Generator[User, None, None]:

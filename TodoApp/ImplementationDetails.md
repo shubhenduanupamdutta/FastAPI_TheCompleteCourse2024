@@ -170,7 +170,7 @@ DELETE FROM todos WHERE title='Learn Something new';
 - **Move to the directory where the database is stored**
 - **Open the SQLite database using the command line**
 
-```
+```sql
 sqlite <database name>
 ```
 
@@ -195,7 +195,7 @@ select * from todos;
 
 We get the output as:
 
-```
+```sql
 1|Go to the store|Pick up eggs|5|0
 ```
 
@@ -400,6 +400,7 @@ aaaaaaaaaaa.bbbbbbbbbbbbbb.ccccccccccccc
     - Registered Claims
     - Public Claims
     - Private Claims
+
   ```json
   {
     "sub": "1234567890",
@@ -410,6 +411,7 @@ aaaaaaaaaaa.bbbbbbbbbbbbbb.ccccccccccccc
     "admin": true
   }
   ```
+
   - _Registered Claims are claims that are predefined, recommended but not mandatory. Top 3 registered claims are:_
     - **iss** (Issuer) - This identifies the principal that issued the JWT
     - **sub** (Subject) - Holds statement about the subject of the JWT. The subject must be scoped either globally or locally unique. Think of subject as a unique identifier for JWT.
@@ -430,13 +432,16 @@ aaaaaaaaaaa.bbbbbbbbbbbbbb.ccccccccccccc
 ### JWT Example
 
 - **JWT Header**
+
   ```json
   {
     "alg": "HS256",
     "typ": "JWT"
   }
   ```
+
 - **JWT Payload**
+
   ```json
   {
     "sub": "1234567890",
@@ -447,7 +452,9 @@ aaaaaaaaaaa.bbbbbbbbbbbbbb.ccccccccccccc
     "admin": true
   }
   ```
+
 - **JWT Signature**
+
   ```text
   HMACSHA256(
       base64UrlEncode(header) + "." +
@@ -455,6 +462,7 @@ aaaaaaaaaaa.bbbbbbbbbbbbbb.ccccccccccccc
       learn_online
   )
   ```
+
 - **JSON Web Token (JWT)**
 
 ```text
@@ -480,11 +488,11 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 
 - **Imagine this scenario, a single company or enterprise has multiple different application that many users work with.**
 - **For example, let's say you want to get into cryptocurrency.**
-    - _App One is cryptocurrency market where you can buy and sell many different types of cryptocurrencies._
-    - _The same company owns another application, App Two, where you can store cryptocurrency in a digital wallet._
-    - _The company will not want the user to sign in every time they switch between the two applications._
-    - _It would be a much better experience, if the user didn't even notice that there were two different applications._
-    - _This is where JWT comes in. If both App One and App Two share the same secret, then the user can log in once and access both applications without having to log in again._
+  - _App One is cryptocurrency market where you can buy and sell many different types of cryptocurrencies._
+  - _The same company owns another application, App Two, where you can store cryptocurrency in a digital wallet._
+  - _The company will not want the user to sign in every time they switch between the two applications._
+  - _It would be a much better experience, if the user didn't even notice that there were two different applications._
+  - _This is where JWT comes in. If both App One and App Two share the same secret, then the user can log in once and access both applications without having to log in again._
 
 - **JWT is a specially useful in microservices, where multiple services are working together, and are stateless but will require user information. These microservices can use JWT to authorize the user to access the resources, without having a separate user authentication/authorization endpoint.**
 
