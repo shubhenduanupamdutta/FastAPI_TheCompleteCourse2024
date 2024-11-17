@@ -16,7 +16,7 @@ if (todoForm) {
     };
 
     try {
-      const response = await fetch("/todos/todo", {
+      const response = await fetch("/todo/todo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +66,7 @@ if (editTodoForm) {
 
       console.log(`${todoId}`);
 
-      const response = await fetch(`/todos/todo/${todoId}`, {
+      const response = await fetch(`/todo/todo/${todoId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ if (editTodoForm) {
       });
 
       if (response.ok) {
-        window.location.href = "/todos/todo-page"; // Redirect to the todo page
+        window.location.href = "/todo/todo-page"; // Redirect to the todo page
       } else {
         // Handle error
         const errorData = await response.json();
@@ -107,7 +107,7 @@ if (editTodoForm) {
 
       if (response.ok) {
         // Handle success
-        window.location.href = "/todos/todo-page"; // Redirect to the todo page
+        window.location.href = "/todo/todo-page"; // Redirect to the todo page
       } else {
         // Handle error
         const errorData = await response.json();
@@ -175,7 +175,6 @@ if (registerForm) {
 
     if (data.password !== data.password2) {
       alert("Passwords do not match");
-      console.log(data.password, data.password2);
       return;
     }
 
@@ -190,7 +189,6 @@ if (registerForm) {
     };
 
     try {
-      console.log(payload);
       const response = await fetch("/auth", {
         method: "POST",
         headers: {

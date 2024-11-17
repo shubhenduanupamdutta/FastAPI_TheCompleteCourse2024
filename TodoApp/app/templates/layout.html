@@ -13,6 +13,8 @@
   </head>
 
   <body>
+    {% include 'navbar.html' %}
+    <!--  Style Need to maintain line break-->
     {% block content %} {% endblock %}
     <script src="{{ url_for('static', path='/js/jquery-slim.js') }}"></script>
     <script src="{{ url_for('static', path='/js/popper.js') }}"></script>
