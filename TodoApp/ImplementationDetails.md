@@ -170,7 +170,7 @@ DELETE FROM todos WHERE title='Learn Something new';
 - **Move to the directory where the database is stored**
 - **Open the SQLite database using the command line**
 
-```
+```sql
 sqlite <database name>
 ```
 
@@ -195,7 +195,7 @@ select * from todos;
 
 We get the output as:
 
-```
+```sql
 1|Go to the store|Pick up eggs|5|0
 ```
 
