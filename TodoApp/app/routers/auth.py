@@ -57,9 +57,7 @@ async def create_user(create_user_request: CreateUserRequest, db: DB_Dependency)
 async def login_for_access_token(form_data: OAuth2Form, db: DB_Dependency):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     token = create_access_token(user.username, user.id, user.role)  # type: ignore
 
     return {"access_token": token, "token_type": "bearer"}

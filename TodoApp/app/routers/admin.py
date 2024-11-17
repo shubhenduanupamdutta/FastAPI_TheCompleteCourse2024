@@ -1,7 +1,8 @@
 from typing import Annotated
 
-from ..database import DB_Dependency
 from fastapi import APIRouter, HTTPException, Path, status
+
+from ..database import DB_Dependency
 from ..models import Todo
 from ..oauth2 import UserDependency
 
@@ -27,8 +28,6 @@ async def delete_todo(
         )
     todo_query = db.query(Todo).filter(Todo.id == todo_id)
     if todo_query.first() is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
     todo_query.delete(synchronize_session=False)
     db.commit()

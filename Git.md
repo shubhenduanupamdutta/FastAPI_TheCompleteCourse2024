@@ -6,11 +6,13 @@
 
 ---
 
-- ### Git is a free and open source distributed version control system.
-- ### It is designed to handle everything from small to very large projects with speed and efficiency.
-- ### Allows team members to use same files by distributed branches/environments.
+- ### Git is a free and open source distributed version control system
 
-### Git Example:
+- ### It is designed to handle everything from small to very large projects with speed and efficiency
+
+- ### Allows team members to use same files by distributed branches/environments
+
+### Git Example
 
 - **Version 1**
 
@@ -54,7 +56,7 @@ class MathFunctions:
 
 **Git is distributed, which means that every developer has a copy of the repository on their local machine, and changes are synchronized between them.**
 
-### Distributed Version Control System Example:
+### Distributed Version Control System Example
 
 _Let's say we have our class `MathFunctions`, which now include `addition`, `subtraction` and `multiplication` functions. Suppose one of our team member **Bill** is working on a new enhancement to our class, which is to add `division` functionality. His team mate **Sarah** is working on her own feature to add the `power` functionality._
 
@@ -64,7 +66,7 @@ _With Git, Bill and Sarah can work on their own features in their own branches. 
 
 ---
 
-### Recap:
+### Recap
 
 - **Git allows us to track changes in our code.**
 - **Git allows us to have a strong version control system.**
@@ -93,10 +95,13 @@ _With Git, Bill and Sarah can work on their own features in their own branches. 
 
 ## What is GitHub?
 
-- ### GitHub is a web-based platform that provides Git Repository Hosting services.
-- ### It offers all of the distributed version control and source code management (SCM) functionality of Git as well as adding its own features.
-- ### User friendly interface.
-- ### Large development platform.
+- ### GitHub is a web-based platform that provides Git Repository Hosting services
+
+- ### It offers all of the distributed version control and source code management (SCM) functionality of Git as well as adding its own features
+
+- ### User friendly interface
+
+- ### Large development platform
 
 ---
 
@@ -108,7 +113,7 @@ _With Git, Bill and Sarah can work on their own features in their own branches. 
 | **Git is a software.**               | **GitHub is a service.**                                                          |
 | **Git is installed on your system.** | **GitHub is hosted on the web.**                                                  |
 
-### Git Remote Commands:
+### Git Remote Commands
 
 | Git Command                   | Description                                      |
 | ----------------------------- | ------------------------------------------------ |

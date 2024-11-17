@@ -26,7 +26,7 @@
 
 ---
 
-#### **books**: Creating and enhancing books to learn the basics of FastAPI i.e. CRUD Operations.
+#### **books**: Creating and enhancing books to learn the basics of FastAPI i.e. CRUD Operations
 
 **CRUD** stands for Create, Read, Update, and Delete.
 
@@ -34,13 +34,16 @@
 
 ---
 
-#### **book_2**: Enhancing the previous project by adding more features to the books API.
+#### **book_2**: Enhancing the previous project by adding more features to the books API
 
 _We will add Data Validation, Exception Handling, Status Codes, Swagger Configuration and Python Request Objects._
 
 ---
-#### **todos**: Some more advanced concepts using TODOs API.
+
+#### **todos**: Some more advanced concepts using TODOs API
+
 _New Information will include:_
+
 - Full SQL Database (SQLite, PostgreSQL, and MySQL)
 - Authentication
 - Authorization

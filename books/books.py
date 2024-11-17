@@ -57,9 +57,7 @@ async def get_all_books_filtered_by_category(
 ) -> list[dict[str, str]]:
     if category is None:
         return BOOKS
-    return [
-        book for book in BOOKS if book["category"].casefold() == category.casefold()
-    ]
+    return [book for book in BOOKS if book["category"].casefold() == category.casefold()]
 
 
 @app.get("/books/{book_title}")
@@ -71,9 +69,7 @@ async def read_book(book_title: str) -> dict[str, str]:
 
 
 @app.get("/books/{author}")
-async def get_books_by_author_and_category(
-    author: str, category: str
-) -> list[dict[str, str]]:
+async def get_books_by_author_and_category(author: str, category: str) -> list[dict[str, str]]:
     return [
         book
         for book in BOOKS

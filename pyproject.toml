@@ -9,6 +9,6 @@ multi_line_output = 3
 line_length = 99
 
 [tool.ruff]
-select = ["E", "F", "B"]
-ignore = []
+lint.select = ["E", "F", "B"]
+lint.ignore = []
 line-length = 99

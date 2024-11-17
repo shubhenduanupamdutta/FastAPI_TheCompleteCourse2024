@@ -1,8 +1,9 @@
-from ..database import DB_Dependency
 from fastapi import APIRouter, HTTPException, status
+from passlib.context import CryptContext
+
+from ..database import DB_Dependency
 from ..models import User
 from ..oauth2 import UserDependency
-from passlib.context import CryptContext
 from ..schema import UserVerification
 
 router = APIRouter()
@@ -25,9 +26,7 @@ async def get_user(user: UserDependency, db: DB_Dependency):
 
 
 @router.put("/change_password", status_code=status.HTTP_200_OK)
-async def change_password(
-    user: UserDependency, db: DB_Dependency, passwords: UserVerification
-):
+async def change_password(user: UserDependency, db: DB_Dependency, passwords: UserVerification):
     """# This function is used to change the password of the user
 
     - user (UserDependency): UserDependency is a dependency that is used to get the user details from the JWT token
@@ -50,9 +49,7 @@ async def change_password(
 
 
 @router.put("/phone_number/{phone_number}", status_code=status.HTTP_204_NO_CONTENT)
-async def change_phone_number(
-    user: UserDependency, db: DB_Dependency, phone_number: str
-):
+async def change_phone_number(user: UserDependency, db: DB_Dependency, phone_number: str):
     """# This function is used to change the phone number of the user
 
     - user (UserDependency): UserDependency is a dependency that is used to get the user details from the JWT token

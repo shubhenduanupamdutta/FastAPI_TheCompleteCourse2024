@@ -28,6 +28,7 @@
 >
 </link>
 ```
+
 - **Now image we have list of `todos` that we retrieved from the database. We can pass the entire list of `todos` into the front-end and loop through each todo with this simple `for loop` on the template.**
 
 ```python
@@ -44,7 +45,9 @@ context: {
   <li>Do something with todo</li>
 {% endfor %}
 ```
+
 - **We can also use Jinja templating language with `if else` statements. One thing that may stand out is the double brackets with `todos|length`.**
+
 ```html
 {% if todos %}
     Display: {{ todos|length }} Todos
