@@ -41,6 +41,20 @@ async def render_todo_page(request: Request, db: DB_Dependency):
         return redirect_to_login()
 
 
+@router.get("/add-todo-page")
+async def render_add_todo_page(request: Request):
+    try:
+        user = await get_current_user(request.cookies.get("access_token"))  # type: ignore
+        if user is None:
+            return redirect_to_login()
+        return templates.TemplateResponse(
+            "add-todo.html", {"request": request, "user": user}
+        )
+    except Exception as _exc:
+        print(f"Error: {_exc!r}")
+        return redirect_to_login()
+
+
 ### Endpoints ###
 
 
@@ -70,7 +84,6 @@ async def create_todo(
     db: DB_Dependency, todo_request: TodoRequest, user: UserDependency
 ):
     """# This function is used to create a todo"""
-
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
