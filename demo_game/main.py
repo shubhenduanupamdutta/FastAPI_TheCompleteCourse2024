@@ -60,11 +60,13 @@ zombie.walk_forward()
 zombie.attack()
 
 print(
-    f"{zombie.get_type_of_enemy()} has {zombie.health_points} health points and deals {zombie.attack_damage} damage."
+    f"{zombie.get_type_of_enemy()} has {zombie.health_points} health points "
+    f"and deals {zombie.attack_damage} damage."
 )
 
 print(
-    f"{ogre.get_type_of_enemy()} has {ogre.health_points} health points and deals {ogre.attack_damage} damage."
+    f"{ogre.get_type_of_enemy()} has {ogre.health_points} health points"
+    f" and deals {ogre.attack_damage} damage."
 )
 
 weapon = Weapon("Sword", 5)

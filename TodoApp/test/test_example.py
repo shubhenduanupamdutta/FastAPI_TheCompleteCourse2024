@@ -20,8 +20,8 @@ def test_boolean():
 
 
 def test_type():
-    assert type("hello") is str
-    assert type("world") is not int
+    assert type("hello") is str  # noqa: E721
+    assert type("world") is not int  # noqa: E721
 
 
 def test_greater_and_less_than():

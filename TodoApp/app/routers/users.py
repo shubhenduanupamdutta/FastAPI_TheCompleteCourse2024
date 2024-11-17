@@ -13,10 +13,12 @@ bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_user(user: UserDependency, db: DB_Dependency):
-    """# This function is used to get a user detail, given the user is authenticated using JWT token
+    """# This function is used to get a user detail, given the user is authenticated using JWT
+    token
 
     Args:
-        user (UserDependency): UserDependency is a dependency that is used to get the user details from the JWT token
+        user (UserDependency): UserDependency is a dependency that is used to get the user details
+        from the JWT token
         db (DB_Dependency): DB_Dependency is a dependency that is used to get the database session
 
     Returns:
@@ -29,9 +31,11 @@ async def get_user(user: UserDependency, db: DB_Dependency):
 async def change_password(user: UserDependency, db: DB_Dependency, passwords: UserVerification):
     """# This function is used to change the password of the user
 
-    - user (UserDependency): UserDependency is a dependency that is used to get the user details from the JWT token
+    - user (UserDependency): UserDependency is a dependency that is used to get the user details
+    from the JWT token
     - db (DB_Dependency): DB_Dependency is a dependency that is used to get the database session
-    - passwords (UserVerification): UserVerification is a Pydantic model that is used to verify the password
+    - passwords (UserVerification): UserVerification is a Pydantic model that is used to verify
+    the password
     """
 
     user_model = db.query(User).filter(User.id == user.get("id")).first()
@@ -52,7 +56,8 @@ async def change_password(user: UserDependency, db: DB_Dependency, passwords: Us
 async def change_phone_number(user: UserDependency, db: DB_Dependency, phone_number: str):
     """# This function is used to change the phone number of the user
 
-    - user (UserDependency): UserDependency is a dependency that is used to get the user details from the JWT token
+    - user (UserDependency): UserDependency is a dependency that is used to get the user details
+    from the JWT token
     - db (DB_Dependency): DB_Dependency is a dependency that is used to get the database session
     - phone_number (str): The new phone number of the user
     """

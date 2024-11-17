@@ -43,7 +43,8 @@ BOOKS: list[Book] = [
         1,
         "The Great Gatsby",
         "F. Scott Fitzgerald",
-        "The story of the mysteriously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan.",
+        "The story of the mysteriously wealthy Jay Gatsby and his love for the beautiful Daisy \
+        Buchanan.",
         4,
         2013,
     ),
@@ -60,7 +61,8 @@ BOOKS: list[Book] = [
         4,
         "Harry Potter and the Philosopher's Stone",
         "J.K. Rowling",
-        "The story of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley.",
+        "The story of a young wizard, Harry Potter, and his friends Hermione Granger and Ron \
+        Weasley.",
         5,
         2001,
     ),
@@ -68,7 +70,8 @@ BOOKS: list[Book] = [
         5,
         "Storm Front",
         "Jim Butcher",
-        "The story of Harry Dresden, a wizard detective who solves supernatural crimes in Chicago.",
+        "The story of Harry Dresden, a wizard detective who solves supernatural crimes in \
+        Chicago.",
         5,
         2000,
     ),
@@ -76,7 +79,8 @@ BOOKS: list[Book] = [
         6,
         "The Hobbit",
         "J.R.R. Tolkien",
-        "The story of Bilbo Baggins, a hobbit who embarks on an epic quest to reclaim the Lonely Mountain from the dragon Smaug.",
+        "The story of Bilbo Baggins, a hobbit who embarks on an epic quest to reclaim the Lonel \
+        Mountain from the dragon Smaug.",
         5,
         2002,
     ),
@@ -108,7 +112,8 @@ BOOKS: list[Book] = [
         10,
         "Fool Moon",
         "Jim Butcher",
-        "The story of Harry Dresden, a wizard detective who solves supernatural crimes in Chicago.",
+        "The story of Harry Dresden, a wizard detective who solves supernatural crimes in \
+        Chicago.",
         5,
         2009,
     ),

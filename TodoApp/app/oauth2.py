@@ -33,9 +33,11 @@ async def get_current_user(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token has expired. Create a new one.",
-        )
+        ) from ExpiredSignatureError
     except JWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
+        ) from JWTError
 
 
 UserDependency: TypeAlias = Annotated[dict, Depends(get_current_user)]

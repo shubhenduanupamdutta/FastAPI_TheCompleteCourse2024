@@ -26,8 +26,8 @@ Base = declarative_base()
 
 def get_db() -> Generator[Session, None, None]:
     """This function is used to get the database session yield it and close it after use, when the
-    session is used and control is returned. This is done to ensure that the session is closed after
-    use and to avoid memory leaks.
+    session is used and control is returned. This is done to ensure that the session is closed
+    after use and to avoid memory leaks.
 
     Yields:
         sessionmaker[Session]: The database session to be used
