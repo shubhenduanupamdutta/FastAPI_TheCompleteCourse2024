@@ -3,6 +3,7 @@ from typing import Annotated, TypeAlias
 from fastapi import APIRouter, HTTPException, Path, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
+from sqlalchemy import select
 
 from ..database import DB_Dependency
 from ..models import Todo
@@ -31,7 +32,8 @@ async def render_todo_page(request: Request, db: DB_Dependency):
         user = await get_current_user(request.cookies.get("access_token"))  # type: ignore
         if user is None:
             return redirect_to_login()
-        todos = db.query(Todo).filter(Todo.owner_id == user.get("id")).all()
+        result = await db.execute(select(Todo).filter(Todo.owner_id == user.get("id")))
+        todos = result.scalars().all()
         return templates.TemplateResponse(
             "todo.html", {"request": request, "todos": todos, "user": user}
         )
@@ -57,12 +59,10 @@ async def render_edit_todo_page(request: Request, todo_id: int, db: DB_Dependenc
         user = await get_current_user(request.cookies.get("access_token"))  # type: ignore
         if user is None:
             return redirect_to_login()
-        todo = (
-            db.query(Todo)
-            .filter(Todo.id == todo_id)
-            .filter(Todo.owner_id == user.get("id"))
-            .first()
+        result = await db.execute(
+            select(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
         )
+        todo = result.scalar_one_or_none()
         if todo is None:
             return redirect_to_login()
         return templates.TemplateResponse(
@@ -79,18 +79,20 @@ async def render_edit_todo_page(request: Request, todo_id: int, db: DB_Dependenc
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_all_todos(user: UserDependency, db: DB_Dependency):
     """# This function is used to get all the todos from the database"""
-    return db.query(Todo).filter(Todo.owner_id == user.get("id")).all()
+    result = await db.execute(select(Todo).filter(Todo.owner_id == user.get("id")))
+    return result.scalars().all()
 
 
 @router.get("/{todo_id}", status_code=status.HTTP_200_OK)
 async def get_todo_by_id(user: UserDependency, db: DB_Dependency, todo_id: TodoId):
     """# This function is used to get a todo by its id"""
 
-    todo_model = (
-        db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id")).first()
+    result = await db.execute(
+        select(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
     )
-    if todo_model is not None:
-        return todo_model
+    todo = result.scalar_one_or_none()
+    if todo is not None:
+        return todo
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
 
 
@@ -102,8 +104,8 @@ async def create_todo(db: DB_Dependency, todo_request: TodoRequest, user: UserDe
     todo_model = Todo(**todo_request.model_dump(), owner_id=user.get("id"))
 
     db.add(todo_model)
-    db.commit()
-    db.refresh(todo_model)
+    await db.commit()
+    await db.refresh(todo_model)
     return todo_model
 
 
@@ -112,22 +114,27 @@ async def update_todo(
     user: UserDependency, db: DB_Dependency, todo_id: TodoId, todo_request: TodoRequest
 ):
     """# This function is used to update a todo"""
-    todo_query = db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
-    todo_model = todo_query.first()
+    result = await db.execute(
+        select(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
+    )
+    todo_model = result.scalar_one_or_none()
     if todo_model is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
-    todo_query.update(todo_request.model_dump(), synchronize_session=False)  # type: ignore
-    db.commit()
-    db.refresh(todo_model)
+    updated_todo = Todo(**todo_request.model_dump(), id=todo_id, owner_id=user.get("id"))
+    await db.merge(updated_todo)
+    await db.commit()
+    await db.refresh(todo_model)
     return todo_model
 
 
 @router.delete("/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_todo(user: UserDependency, db: DB_Dependency, todo_id: TodoId):
     """# This function is used to delete a todo"""
-    todo_query = db.query(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
-    todo_model = todo_query.first()
+    result = await db.execute(
+        select(Todo).filter(Todo.id == todo_id).filter(Todo.owner_id == user.get("id"))
+    )
+    todo_model = result.scalar_one_or_none()
     if todo_model is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
-    todo_query.delete(synchronize_session=False)
-    db.commit()
+    await db.delete(todo_model)
+    await db.commit()

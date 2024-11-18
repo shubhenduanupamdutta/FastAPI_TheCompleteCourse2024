@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Path, status
+from sqlalchemy import select
 
 from ..database import DB_Dependency
 from ..models import Todo
@@ -15,7 +16,8 @@ async def get_all(user: UserDependency, db: DB_Dependency):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed"
         )
-    return db.query(Todo).all()
+    result = await db.execute(select(Todo).order_by(Todo.id))
+    return result.scalars().all()
 
 
 @router.delete("/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -26,8 +28,9 @@ async def delete_todo(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed"
         )
-    todo_query = db.query(Todo).filter(Todo.id == todo_id)
-    if todo_query.first() is None:
+    todo_query = await db.execute(select(Todo).filter(Todo.id == todo_id))
+    todo = todo_query.scalar_one_or_none()
+    if todo is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
-    todo_query.delete(synchronize_session=False)
-    db.commit()
+    await db.delete(todo)
+    await db.commit()
