@@ -59,7 +59,7 @@ async def connection(anyio_backend) -> AsyncGenerator[AsyncConnection, None]:
         yield conn
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 async def transaction(connection: AsyncConnection) -> AsyncGenerator[AsyncTransaction, None]:
     async with connection.begin() as transaction:
         yield transaction
@@ -69,25 +69,25 @@ async def transaction(connection: AsyncConnection) -> AsyncGenerator[AsyncTransa
 # All changes that occur in a test function are rolled back
 # after function exits, even if session.commit() is called
 # in inner functions
-@pytest.fixture()
+@pytest.fixture(scope="session")
 async def session(
     connection: AsyncConnection, transaction: AsyncTransaction
 ) -> AsyncGenerator[AsyncSession, None]:
     async_session = AsyncSession(
         bind=connection,
-        join_transaction_mode="create_savepoint",
+        # join_transaction_mode="create_savepoint",
     )
 
     yield async_session
 
-    await transaction.rollback()
+    # await transaction.rollback()
 
 
 # Use this fixture to get HTTPX's client to test API.
 # All changes that occur in a test function are rolled back
 # after function exits, even if session.commit() is called
 # in FastAPI's application endpoints
-@pytest.fixture()
+@pytest.fixture(scope="session")
 async def client(
     connection: AsyncConnection, transaction: AsyncTransaction
 ) -> AsyncGenerator[AsyncClient, None]:
@@ -113,10 +113,10 @@ async def client(
     del app.dependency_overrides[get_db]
     del app.dependency_overrides[get_current_user]
 
-    await transaction.rollback()
+    # await transaction.rollback()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session", autouse=True)
 async def test_data(session: AsyncSession):
     bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     users = [
