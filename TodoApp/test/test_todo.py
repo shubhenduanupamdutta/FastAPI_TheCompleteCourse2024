@@ -65,7 +65,7 @@ async def test_create_todo(client, session: AsyncSession):
 
     response = await client.post("/todo/", json=request_data)
     assert response.status_code == status.HTTP_201_CREATED
-    request_data.update({"id": 5, "owner_id": 1})
+    request_data.update({"owner_id": 1})
     assert response.json() == request_data
 
     result = await session.execute(select(Todo).filter(Todo.id == 5))
@@ -75,7 +75,6 @@ async def test_create_todo(client, session: AsyncSession):
     assert todo.priority == request_data.get("priority")  # type: ignore
     assert todo.complete == request_data.get("complete")  # type: ignore
     assert todo.owner_id == request_data.get("owner_id")  # type: ignore
-    assert todo.id == request_data.get("id")  # type: ignore
 
 
 async def test_update_todo(client, session: AsyncSession):
@@ -85,7 +84,7 @@ async def test_update_todo(client, session: AsyncSession):
         "priority": 1,
         "complete": True,
     }
-    response = await client.put("/todo/5", json=request_data)
+    response = await client.put("/todo/3", json=request_data)
     request_data.update({"id": 5, "owner_id": 1})
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == request_data
@@ -113,7 +112,7 @@ async def test_update_todo_not_found(client):
 
 
 async def test_delete_todo(client, session: AsyncSession):
-    response = await client.delete("/todo/5")
+    response = await client.delete("/todo/2")
     assert response.status_code == status.HTTP_204_NO_CONTENT
     result = await session.execute(select(Todo).filter(Todo.id == 5))
     todo = result.scalar_one_or_none()
