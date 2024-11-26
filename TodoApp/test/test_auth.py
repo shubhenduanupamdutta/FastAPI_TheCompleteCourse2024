@@ -1,28 +1,27 @@
-# ruff: noqa: F401, F811
 import pytest
 from fastapi import HTTPException
 from jose import jwt
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..app.config import settings
-from ..app.models import User
 from ..app.oauth2 import create_access_token, get_current_user
 from ..app.routers.auth import authenticate_user
-from .utils import TestingSessionLocal, client, test_todo, test_user
+
+pytestmark = pytest.mark.anyio
 
 
-def test_authenticate_user(test_user: User):
-    db = TestingSessionLocal()
-    test_username: str = test_user.username  # type: ignore
+async def test_authenticate_user(session: AsyncSession):
+    test_username: str = "rooh_baba"
 
-    authenticated_user = authenticate_user(test_username, "test_password", db)
-    print(repr(authenticated_user))
+    authenticated_user = await authenticate_user(test_username, "password_123", session)
+    # print(repr(authenticated_user))
     assert authenticated_user is not None
     assert authenticated_user.username == test_username  # type: ignore
 
-    non_existent_user = authenticate_user("WrongUserName", "test_password", db)
+    non_existent_user = await authenticate_user("WrongUserName", "test_password", session)
     assert non_existent_user is None
 
-    wrong_password_user = authenticate_user(test_username, "WrongPassword", db)
+    wrong_password_user = await authenticate_user(test_username, "WrongPassword", session)
     assert wrong_password_user is None
 
 
@@ -45,7 +44,6 @@ def test_create_access_token():
     assert decoded_token.get("role") == role
 
 
-@pytest.mark.asyncio
 async def test_get_current_user_valid_token():
     encode = {"sub": "test_user", "id": 1, "role": "admin"}
     token = jwt.encode(encode, settings.secret_key, algorithm=settings.algorithm)
@@ -54,7 +52,6 @@ async def test_get_current_user_valid_token():
     assert user == {"username": "test_user", "id": 1, "user_role": "admin"}
 
 
-@pytest.mark.asyncio
 async def test_get_current_user_missing_payload():
     encode = {"role": "user"}
     token = jwt.encode(encode, settings.secret_key, algorithm=settings.algorithm)

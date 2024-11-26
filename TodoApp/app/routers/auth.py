@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import DB_Dependency
 from ..models import User
@@ -30,11 +32,12 @@ def render_register_page(request: Request):
 ### Endpoints ###
 
 
-def authenticate_user(username: str, password: str, db) -> User | None:
-    user = db.query(User).filter(User.username == username).first()
+async def authenticate_user(username: str, password: str, db: AsyncSession) -> User | None:
+    result = await db.execute(select(User).filter(User.username == username))
+    user = result.scalar_one_or_none()
     if not user:
         return None
-    if not bcrypt_context.verify(password, user.hashed_password):
+    if not bcrypt_context.verify(password, user.hashed_password):  # type: ignore
         return None
     return user
 
@@ -48,14 +51,14 @@ async def create_user(create_user_request: CreateUserRequest, db: DB_Dependency)
     new_user = User(**user_dict)
 
     db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+    await db.commit()
+    await db.refresh(new_user)
     return new_user
 
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2Form, db: DB_Dependency):
-    user = authenticate_user(form_data.username, form_data.password, db)
+    user = await authenticate_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     token = create_access_token(user.username, user.id, user.role)  # type: ignore

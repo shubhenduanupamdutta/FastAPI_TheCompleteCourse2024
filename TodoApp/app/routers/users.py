@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from passlib.context import CryptContext
+from sqlalchemy import select
 
 from ..database import DB_Dependency
 from ..models import User
@@ -24,7 +25,8 @@ async def get_user(user: UserDependency, db: DB_Dependency):
     Returns:
         User | None: Returns the user details if the user is found, else returns None
     """
-    return db.query(User).filter(User.id == user.get("id")).first()
+    result = await db.execute(select(User).filter(User.id == user.get("id")))
+    return result.scalar_one_or_none()
 
 
 @router.put("/change_password", status_code=status.HTTP_200_OK)
@@ -38,18 +40,19 @@ async def change_password(user: UserDependency, db: DB_Dependency, passwords: Us
     the password
     """
 
-    user_model = db.query(User).filter(User.id == user.get("id")).first()
+    user_model = await db.execute(select(User).filter(User.id == user.get("id")))
+    user = user_model.scalar_one()
 
-    if not bcrypt_context.verify(passwords.password, user_model.hashed_password):  # type: ignore
+    if not bcrypt_context.verify(passwords.password, user.hashed_password):  # type: ignore
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Error on password change."
         )
 
-    user_model.hashed_password = bcrypt_context.hash(passwords.new_password)  # type: ignore
-    db.add(user_model)
-    db.commit()
-    db.refresh(user_model)
-    return user_model
+    user.hashed_password = bcrypt_context.hash(passwords.new_password)  # type: ignore
+    await db.merge(user)
+    await db.commit()
+    await db.refresh(user)
+    return user
 
 
 @router.put("/phone_number/{phone_number}", status_code=status.HTTP_204_NO_CONTENT)
@@ -62,9 +65,10 @@ async def change_phone_number(user: UserDependency, db: DB_Dependency, phone_num
     - phone_number (str): The new phone number of the user
     """
 
-    user_model = db.query(User).filter(User.id == user.get("id")).first()
-    user_model.phone_number = phone_number  # type: ignore
-    db.add(user_model)
-    db.commit()
-    db.refresh(user_model)
-    return user_model
+    user_model = await db.execute(select(User).filter(User.id == user.get("id")))
+    user = user_model.scalar_one()
+    user.phone_number = phone_number  # type: ignore
+    await db.merge(user)
+    await db.commit()
+    await db.refresh(user)
+    return user
