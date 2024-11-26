@@ -65,7 +65,7 @@ async def test_create_todo(client, session: AsyncSession):
 
     response = await client.post("/todo/", json=request_data)
     assert response.status_code == status.HTTP_201_CREATED
-    request_data.update({"owner_id": 1})
+    request_data.update({"owner_id": 1, "id": 5})
     assert response.json() == request_data
 
     result = await session.execute(select(Todo).filter(Todo.id == 5))
@@ -85,11 +85,11 @@ async def test_update_todo(client, session: AsyncSession):
         "complete": True,
     }
     response = await client.put("/todo/3", json=request_data)
-    request_data.update({"id": 5, "owner_id": 1})
+    request_data.update({"id": 3, "owner_id": 1})
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == request_data
 
-    todo = await session.execute(select(Todo).filter(Todo.id == 5))
+    todo = await session.execute(select(Todo).filter(Todo.id == 3))
     todo = todo.scalar_one()
     assert todo.title == request_data.get("title")  # type: ignore
     assert todo.description == request_data.get("description")  # type: ignore
@@ -112,9 +112,10 @@ async def test_update_todo_not_found(client):
 
 
 async def test_delete_todo(client, session: AsyncSession):
-    response = await client.delete("/todo/2")
+    # Since todo with id 1, 3 and 5 are owned by user with id 1
+    response = await client.delete("/todo/3")
     assert response.status_code == status.HTTP_204_NO_CONTENT
-    result = await session.execute(select(Todo).filter(Todo.id == 5))
+    result = await session.execute(select(Todo).filter(Todo.id == 3))
     todo = result.scalar_one_or_none()
     assert todo is None
 
