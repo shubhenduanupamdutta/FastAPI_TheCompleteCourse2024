@@ -1,8 +1,8 @@
-"""Building Database and Tables
+"""SQLAlchemy newer syntax of models
 
-Revision ID: e58714e65da7
+Revision ID: a6e383dbc149
 Revises:
-Create Date: 2024-11-18 18:38:12.977652
+Create Date: 2024-11-26 22:35:51.730897
 
 """
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "e58714e65da7"
+revision: str = "a6e383dbc149"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,14 +23,14 @@ def upgrade() -> None:
     op.create_table(
         "users",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("email", sa.String(), nullable=True),
-        sa.Column("username", sa.String(), nullable=True),
-        sa.Column("first_name", sa.String(), nullable=True),
-        sa.Column("last_name", sa.String(), nullable=True),
-        sa.Column("hashed_password", sa.String(), nullable=True),
-        sa.Column("is_active", sa.Boolean(), nullable=True),
-        sa.Column("role", sa.String(), nullable=True),
-        sa.Column("phone_number", sa.String(length=45), nullable=True),
+        sa.Column("email", sa.String(), nullable=False),
+        sa.Column("username", sa.String(), nullable=False),
+        sa.Column("first_name", sa.String(), nullable=False),
+        sa.Column("last_name", sa.String(), nullable=False),
+        sa.Column("hashed_password", sa.String(), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False),
+        sa.Column("role", sa.String(), nullable=False),
+        sa.Column("phone_number", sa.String(length=45), nullable=False),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("username"),
     )
@@ -39,11 +39,11 @@ def upgrade() -> None:
     op.create_table(
         "todos",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("title", sa.String(), nullable=True),
-        sa.Column("description", sa.String(), nullable=True),
-        sa.Column("priority", sa.Integer(), nullable=True),
-        sa.Column("complete", sa.Boolean(), nullable=True),
-        sa.Column("owner_id", sa.Integer(), nullable=True),
+        sa.Column("title", sa.String(), nullable=False),
+        sa.Column("description", sa.String(), nullable=False),
+        sa.Column("priority", sa.Integer(), nullable=False),
+        sa.Column("complete", sa.Boolean(), nullable=False),
+        sa.Column("owner_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
             ["owner_id"],
             ["users.id"],
